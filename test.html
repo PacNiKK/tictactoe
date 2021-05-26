@@ -124,43 +124,20 @@
 			fillGame(turn);
 		}
 	}
-<<<<<<< HEAD
-	function toGame() { // array to playingfield
-=======
 	function toGame() {
->>>>>>> e26a62a27d12de0564f7348ef40dbd22c6b596b7
 		var i;
 		var blocks = document.getElementsByClassName('field');
 		for ( i=0; i<blocks.length; i++) {
 			blocks[i].innerHTML=game[i];
 		}
 	}
-<<<<<<< HEAD
-	function toArray() { // playing field to array
-=======
 	function toArray() {
->>>>>>> e26a62a27d12de0564f7348ef40dbd22c6b596b7
 		var i;
 		var blocks = document.getElementsByClassName('field');
 		for ( i=0; i<blocks.length; i++) {
 			game[i]=blocks[i].innerHTML;
 		}
  	}
-<<<<<<< HEAD
-	function fillGame(letter) { //fills empty fields with player who has the next move for hover
-		if( winner === ''){
-			var i;
-			var blocks = document.getElementsByClassName('field');
-			for (i=0; i<blocks.length; i++) {
-				if (blocks[i].innerHTML==='') {
-					blocks[i].innerHTML=letter;
-				}
-			}	
-		}
-		
-	}
-	function checkGame() { //checks if there is a winner, writes it to var "winner"
-=======
 	function fillGame(letter) {
 		var i;
 		var blocks = document.getElementsByClassName('field');
@@ -171,7 +148,6 @@
 		}
 	}
 	function checkGame() {
->>>>>>> e26a62a27d12de0564f7348ef40dbd22c6b596b7
 		var winningConditions=[[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[6,4,2]];
 		var i;
 		for ( i=0; i<winningConditions.length; i++) {
@@ -188,15 +164,8 @@
 			}
 			
 		}
-<<<<<<< HEAD
-		// if winner is found
 		if ( winner != ''){
 			document.getElementById('Info').innerHTML=winner;
-			toGame(); //empty remaining fields
-=======
-		if ( winner != ''){
-			document.getElementById('Info').innerHTML=winner;
->>>>>>> e26a62a27d12de0564f7348ef40dbd22c6b596b7
 			var iii;
 			i--;
 			var blocks=document.getElementsByClassName('field');
@@ -205,11 +174,7 @@
 				blocks[winningConditions[i][iii]].classList.remove('taken');
 				blocks[winningConditions[i][iii]].classList.remove('hoverable');
 			}
-<<<<<<< HEAD
-			
-=======
 			toGame();
->>>>>>> e26a62a27d12de0564f7348ef40dbd22c6b596b7
 		}
 	}
 	function myreset() {
