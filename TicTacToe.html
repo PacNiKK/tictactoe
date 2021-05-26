@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="de-CH">
+	<head>
+		<title>Tic Tac To</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<style>
+		:root{
+				--blue: #0080FF;
+				--orange: #FF8000;
+				--green: #36e261;
+				--grey: #9d9dad;
+				--light: #f0eded;
+				--red: #ff000050;
+				--dark: #4d4d5d;
+				--grid-line-default: 5px solid;
+				--grid-line-invisible: var(--grid-line-default) body.background-color;
+				--grid-line: var(--grid-line-default) var(--orange);
+			}
+			
+			body{
+				font-family:helvetica;
+				background-color: var(--light);
+				color: var(--dark);
+			}
+			
+			h1{
+				color: var(--dark);
+				background-color: var(--orange);
+			}
+			
+			hr{
+				border: 0;
+				height: 0;
+				border-bottom: 3px solid var(--dark);
+			}
+			
+			.board{
+				display: grid;
+				grid-template-columns: 25vmin 25vmin 25vmin;
+				grid-template-rows: 25vmin 25vmin 25vmin;
+				grid-gap: 0px;
+			}
+			
+			.field{
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				font-size: 23vmin;
+				font-family:'Montserrat', sans-serif;
+				border: var(--grid-line-invisible);
+				color: var(--light);
+			}
+			.hoverable:hover{
+				background-color: var(--green);
+				color: var(--grey);
+			}
+			.taken{
+				color: var(--dark);
+			}
+			.taken:hover{
+				background-color: var(--red);
+			}
+			
+			.middle{
+				border-top: var(--grid-line);
+				border-bottom: var(--grid-line);
+			}
+			
+			.center{
+				border-left: var(--grid-line);
+				border-right: var(--grid-line);
+			}
+			.winning{
+				background-color: var(--blue);
+				color: var(--dark);
+			}
+			button{
+				border: 3px solid var(--orange);
+				color: var(--dark);
+				background-color: var(--light);
+			}
+			button:hover{
+				background-color: var(--grey);
+			}
+		</style>
+	</head>
+	<body>
+	<h1>Tic Tac Toe</h1>
+	<div class="board">
+		<div onclick="myclick(this)" id="field1" class="field hoverable"></div>
+		<div onclick="myclick(this)" id="field2"class="center field hoverable"></div>
+		<div onclick="myclick(this)" id="field3"class="field hoverable"></div>
+		<div onclick="myclick(this)" id="field4"class="middle field hoverable"></div>
+		<div onclick="myclick(this)" id="field5"class="center middle field hoverable"></div>
+		<div onclick="myclick(this)" id="field6"class="middle field hoverable"></div>
+		<div onclick="myclick(this)" id="field7"class="field hoverable"></div>
+		<div onclick="myclick(this)" id="field8"class="center field hoverable"></div>
+		<div onclick="myclick(this)" id="field9"class="field hoverable"></div>
+	</div>
+	<button id="resetButton" onclick="myreset()">RESET</button>
+	<h2 id="Info"></h2>
+	<h2 id="gameArray"></h2>
+	<script>
+	var game=['','','','','','','','',''];
+	var turn='X';
+	fillGame(turn);
+	var winner='';
+	function myclick(block) {
+		toGame();
+		if( winner === '') {
+			if (turn==='X' && block.innerHTML===''){
+				block.innerHTML='X';
+				block.classList.remove('hoverable');
+				block.classList.add('taken');
+				turn='O';
+			}else if (turn==='O' && block.innerHTML===''){
+				block.innerHTML='O';
+				block.classList.remove('hoverable');
+				block.classList.add('taken');
+				turn='X';
+			}
+			toArray();
+			checkGame();
+			fillGame(turn);
+		}
+	}
+	function toGame() { // array to playingfield
+		var i;
+		var blocks = document.getElementsByClassName('field');
+		for ( i=0; i<blocks.length; i++) {
+			blocks[i].innerHTML=game[i];
+		}
+	}
+	function toArray() { // playing field to array
+		var i;
+		var blocks = document.getElementsByClassName('field');
+		for ( i=0; i<blocks.length; i++) {
+			game[i]=blocks[i].innerHTML;
+		}
+ 	}
+	function fillGame(letter) { //fills empty fields with player who has the next move for hover
+		if( winner === ''){
+			var i;
+			var blocks = document.getElementsByClassName('field');
+			for (i=0; i<blocks.length; i++) {
+				if (blocks[i].innerHTML==='') {
+					blocks[i].innerHTML=letter;
+				}
+			}	
+		}
+		
+	}
+	function checkGame() { //checks if there is a winner, writes it to var "winner"
+		var winningConditions=[[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[6,4,2]];
+		var i;
+		for ( i=0; i<winningConditions.length; i++) {
+			var ii;
+			if( winner != ''){
+				break;
+			}
+			winner=game[winningConditions[i][0]];
+			for ( ii=1; ii<winningConditions[i].length; ii++) {
+				if ( game[winningConditions[i][ii]] == '' || game[winningConditions[i][ii]] != winner) {
+					winner='';
+					break;
+				}
+			}
+			
+		}
+		// if winner is found
+		if ( winner != ''){
+			document.getElementById('Info').innerHTML=winner;
+			toGame(); //empty remaining fields
+			var iii;
+			i--;
+			var blocks=document.getElementsByClassName('field');
+			for ( iii=0; iii<winningConditions[i].length; iii++ ) {
+				blocks[winningConditions[i][iii]].classList.add('winning');
+				blocks[winningConditions[i][iii]].classList.remove('taken');
+				blocks[winningConditions[i][iii]].classList.remove('hoverable');
+			}
+			
+		}
+	}
+	function myreset() {
+		var i;
+		var blocks = document.getElementsByClassName('field');
+		for ( i=0; i<blocks.length; i++) {
+			blocks[i].innerHTML='';
+			blocks[i].classList.remove('taken');
+			blocks[i].classList.add('hoverable');
+			blocks[i].classList.remove('winning');
+			game[i]='';
+			winner='';
+			document.getElementById('Info').innerHTML='';
+		}
+	}
+	</script>
+	</body>
+</html>
